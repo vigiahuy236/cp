@@ -7,7 +7,7 @@
 using namespace std;
 
 const int N = 3e5 + 4;
-int n, root;
+int n, root, a, b;
 int par[N], high[N];
 vector<int> adj[N];
 
@@ -46,7 +46,8 @@ void sol() {
         adj[v].push_back(u);
     }
     setup(root);
-    cout << lca(5, 8);
+    cin >> a >> b;
+    cout << lca(a, b);
     return;
 } 
 
