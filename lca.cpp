@@ -8,34 +8,91 @@ using namespace std;
 
 const int N = 3e5 + 4;
 int n, root, a, b;
-int par[N], high[N];
 vector<int> adj[N];
 
-void dfs1(int u) {
-    for (int v : adj[u]) {
-        if (v == par[u]) continue;
-        par[v] = u;
-        high[v] = high[u] + 1;
-        dfs1(v);
+namespace algo1 {
+    int par[N];
+    int high[N];
+
+    void dfslca(int u) {
+        for (int v : adj[u]) {
+            if (v == par[u]) continue;
+            par[v] = u;
+            high[v] = high[u] + 1;
+            dfslca(v);
+        }
+    }
+
+    void setup(int root) {
+        par[root] = root;
+        high[root] = 0;
+        dfslca(root);
+        return;
+    }
+
+    int lca(int u, int v) {
+        if (high[u] < high[v]) swap(v, u);
+        while (high[u] > high[v]) u = par[u];
+        if (u == v) return u;
+        while (u != v) {
+            u = par[u];
+            v = par[v]; 
+        }
+        return u;
+    }
+
+    void sol() {
+        setup(root);
+        cout << lca(a, b);
     }
 }
 
-void setup(int root) {
-    par[root] = root;
-    high[root] = 0;
-    dfs1(root);
-    return;
-}
+namespace algo2 {
+    const int LOG = 20;
+    int high[N];
+    int par[N][LOG];
 
-int lca(int u, int v) {
-    if (high[u] < high[v]) swap(v, u);
-    while (high[u] > high[v]) u = par[u];
-    if (u == v) return u;
-    while (u != v) {
-        u = par[u];
-        v = par[v]; 
+    void dfslca(int u) {
+        for (int v : adj[u]) {
+            if (v == par[u][0]) continue;
+            par[v][0] = u;
+            high[v] = high[u] + 1;
+            dfslca(v);
+        }
     }
-    return u;
+
+    void setup(int root) {
+        par[root][0] = root;
+        high[root] = 0;
+        dfslca(root);
+        for (int j = 1; j < LOG; j++) {
+            for (int i = 1; i <= n; i++) {
+                par[i][j] = par[par[i][j - 1]][j - 1];
+            }
+        }
+        high[0] = -1;
+    }
+
+    int lca(int u, int v) {
+        if (high[u] < high[v]) swap(u, v);
+        for (int i = LOG - 1; i >= 0; i--) {
+            if (high[par[u][i]] >= high[v]) {
+                u = par[u][i];
+            }
+        }
+        if (u == v) return u;
+        for (int i = LOG - 1; i >= 0; i--) {
+            if (par[u][i] == par[v][i]) continue;
+            u = par[u][i];
+            v = par[v][i];
+        }
+        return par[u][0];
+    }
+
+    void sol() {
+        setup(root);
+        cout << lca(a, b);
+    }
 }
 
 void sol() {
@@ -46,8 +103,8 @@ void sol() {
         adj[v].push_back(u);
     }
     cin >> a >> b;
-    setup(root);
-    cout << lca(a, b);
+    algo1::sol();
+    algo2::sol();
     return;
 } 
 
