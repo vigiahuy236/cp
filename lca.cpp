@@ -45,8 +45,8 @@ void sol() {
         adj[u].push_back(v);
         adj[v].push_back(u);
     }
-    setup(root);
     cin >> a >> b;
+    setup(root);
     cout << lca(a, b);
     return;
 } 
