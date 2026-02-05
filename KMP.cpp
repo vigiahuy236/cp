@@ -10,7 +10,7 @@ using namespace std;
 const int N = 1e6 + 5;
 int n;
 string s;
-int pi[N];
+int pi[N]; 
 
 void sol() {
     cin >> s;
