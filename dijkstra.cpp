@@ -41,7 +41,7 @@ void sol() {
     cout << d[t];
     return;
 }
-
+ 
 int main() {
     ios::sync_with_stdio(0); cin.tie(0);
     // freopen("dijkstra.inp", "r", stdin);
