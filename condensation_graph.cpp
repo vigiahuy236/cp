@@ -155,7 +155,9 @@ namespace undirected_graph {
 };
 
 void sol() {
-
+    directed_graph::sol();
+    undirected_graph::sol();
+    return;
 }
 
 int main() {
